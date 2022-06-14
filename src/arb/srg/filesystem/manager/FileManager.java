@@ -22,6 +22,12 @@ public class FileManager implements FileSystemManager<File> {
             if (name.equals("")) {
                 System.out.println("Error! The file can't have null name.");
             }
+            for (File f: folder.getFileList()) {
+                if (f.getFileName().equals(name)) {
+                    System.out.println("Error! This folder already exists.");
+                    name = "";//я считаю это гениальным решением, вот без сарказма))
+                }
+            }
         } while (name.equals(""));
         return new File(name);
     }

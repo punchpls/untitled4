@@ -8,7 +8,7 @@ import static java.lang.System.in;
 public class DirectoryManager implements FileSystemManager<Folder> {
     private Folder folder;
 
-    public DirectoryManager (Folder folder) {
+    public DirectoryManager ( Folder folder ) {
         this.folder = folder;
     }
 
@@ -22,7 +22,16 @@ public class DirectoryManager implements FileSystemManager<Folder> {
             if (name.equals("")) {
                 System.out.println("Error! The folder can't have null name.");
             }
-        } while (name.equals(""));
+            if (name.equals("../")) {
+                System.out.println("Error! The folder can't have parent folder call as name.");
+            }
+            for (Folder f: folder.getFolderList()) {
+                if (f.getFolderName().equals(name)) {
+                    System.out.println("Error! This folder already exists.");
+                    name = "";//я считаю это гениальным решением, вот без сарказма))
+                }
+            }
+        } while (name.equals("") || name.equals("../"));
         return new Folder(name, this.folder);
     }
 
@@ -39,8 +48,7 @@ public class DirectoryManager implements FileSystemManager<Folder> {
         for (Folder f : folder.getFolderList()) {
             if (f.getFolderName().equals(name)) {
                 folder.getFolderList().remove(f);
-            }
-            else {
+            } else {
                 System.out.println("Error! This folder doesn't exist.");
             }
         }
@@ -63,8 +71,7 @@ public class DirectoryManager implements FileSystemManager<Folder> {
             if (f.getFolderName().equals(name)) {
                 System.out.println("Input the new name of the folder: ");
                 f.setFolderName(sc.nextLine());
-            }
-            else {
+            } else {
                 System.out.println("Error! The folder with such name doesn't exist.");
             }
         }
@@ -91,8 +98,7 @@ public class DirectoryManager implements FileSystemManager<Folder> {
         for (Folder f : folder.getFolderList()) {
             if (f.getFolderName().equals(name)) {
                 this.folder = f;
-            }
-            else if ((!f.getFolderName().equals(name) && (!name.equals("../")))){
+            } else if ((!f.getFolderName().equals(name) && (!name.equals("../")))) {
                 System.out.println("Error! The folder with such name doesn't exist.");
             }
         }
